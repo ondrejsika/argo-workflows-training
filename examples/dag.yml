@@ -57,3 +57,21 @@ spec:
               value: D
             - name: sleep
               value: "5"
+      - name: E
+        dependencies: [A]
+        template: echo
+        arguments:
+          parameters:
+            - name: message
+              value: E
+            - name: sleep
+              value: "1"
+      - name: F
+        dependencies: [E, D]
+        template: echo
+        arguments:
+          parameters:
+            - name: message
+              value: F
+            - name: sleep
+              value: "1"
