@@ -14,3 +14,11 @@ kubectl apply -n argo -f https://github.com/argoproj/argo-workflows/releases/dow
 https://github.com/argoproj/argo-workflows/releases/
 
 TODO
+
+## Argo Workflows Dashboard
+
+```bash
+kubectl -n argo port-forward svc/argo-server 2746:2746
+```
+
+See: http://127.0.0.1:2746
