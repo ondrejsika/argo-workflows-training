@@ -1,0 +1,59 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: dag-
+spec:
+  entrypoint: main
+  templates:
+  - name: echo
+    inputs:
+      parameters:
+      - name: message
+      - name: sleep
+    container:
+      image: busybox
+      command:
+        - sh
+        - -c
+        - |
+          echo "{{inputs.parameters.message}}"
+          sleep "{{inputs.parameters.sleep}}"
+          echo Done
+  - name: main
+    dag:
+      tasks:
+      - name: A
+        template: echo
+        arguments:
+          parameters:
+            - name: message
+              value: A
+            - name: sleep
+              value: "10"
+      - name: B
+        dependencies: [A]
+        template: echo
+        arguments:
+          parameters:
+            - name: message
+              value: B
+            - name: sleep
+              value: "10"
+      - name: C
+        dependencies: [A]
+        template: echo
+        arguments:
+          parameters:
+            - name: message
+              value: C
+            - name: sleep
+              value: "20"
+      - name: D
+        dependencies: [B, C]
+        template: echo
+        arguments:
+          parameters:
+            - name: message
+              value: D
+            - name: sleep
+              value: "5"
